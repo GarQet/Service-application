@@ -1,5 +1,8 @@
 @isTest
-private with sharing class CaseTriggerTest {   
+private with sharing class CaseTriggerTest {  
+    static Integer maxLenghtSubject = Constants.MAXIMAL_SUBJECT_LENGTH_OF_SHORT_SUMMARY;
+    static Integer maxLenghtDescription = Constants.MAXIMAL_DESCRIPTION_LENGTH_OF_SHORT_SUMMARY;
+    
 	@testSetup
     static void setup() {
         Profile profile = [SELECT Id FROM Profile WHERE Name='Standard User'];
@@ -19,17 +22,22 @@ private with sharing class CaseTriggerTest {
         insert newUser;
     }
     
+    /*
+    Trigger creating short summary like this '[Subject]' + ' Description'
+    If Subject is longer than 35 chars, Trigger should cut the String to 32 chars and add three dots
+    If Description is longer than 120 chars, Trigger should cut the String to 117 chars and add three dots
+    For example: If both variables exist the total length of short summary will be always longer for 3 chars (look at first line od this comment)
+    																					- blank space, and two special symbols [ and ] = 3 chars
+	*/
+    
     @isTest
     static void checkMaxLengthOfShortSummary() {
         User testUser = [SELECT Id FROM User WHERE FirstName = 'Test'];
-        Integer extraSymbolsPlusBlankSpace = 3; // Trigger creating short summary like this '[Subject]' + ' Description'
-        									    // two symbols: '[' and ']', one blank space ' ', total 3 elements.
-        CaseSetupVariables getInfo = new CaseSetupVariables();
-        Integer maxLenghtTitle = getInfo.getMaxLengthOfTitleForShortSummary();
-        Integer maxLenghtDescription = getInfo.getMaxLengthOfDescriptionForShortSummary();
-        System.assertEquals(35, maxLenghtTitle);
+        Integer extraSymbolsPlusBlankSpace = 3; // blank space, and two special symbols [ and ] = 3 chars
+        System.assertEquals(35, maxLenghtSubject);
         System.assertEquals(120, maxLenghtDescription);
         
+        // Subject = 39 chars, Description = 128 chars, Total = 167 chars
         Case newCase = new Case(
         	OwnerId = testUser.Id,
             Subject = 'Test subject to test the maximum length',
@@ -43,17 +51,14 @@ private with sharing class CaseTriggerTest {
         Case testCase = [SELECT Short_Summary__c FROM Case WHERE OwnerId =: testUser.Id];
         Integer caseShortSummaryLength = testCase.Short_Summary__c.length();
         
-        System.assertEquals(maxLenghtTitle + maxLenghtDescription + extraSymbolsPlusBlankSpace, caseShortSummaryLength);
+        System.assertEquals(maxLenghtSubject + maxLenghtDescription + extraSymbolsPlusBlankSpace, caseShortSummaryLength);
     }
     
     @isTest
-    static void titleShorterThanMax() {
+    static void subjectShorterThanMax() {
         User testUser = [SELECT Id FROM User WHERE FirstName = 'Test'];
-        Integer extraSymbolsPlusBlankSpace = 2; // Trigger creating short summary like this '[Subject]' + ' Description'
-        									    // two symbols: '[' and ']', blank space is added in Description ' ', total 2 elements.
-        CaseSetupVariables getInfo = new CaseSetupVariables();
-        Integer maxLenghtTitle = getInfo.getMaxLengthOfTitleForShortSummary();
-        System.assertEquals(35, maxLenghtTitle);
+        Integer extraSymbolsPlusBlankSpace = 2; // two symbols: '[' and ']', blank space would be added in Description which not exist in this test, total 2 elements.
+        System.assertEquals(35, maxLenghtSubject);
         
         Case newCase = new Case(
         	OwnerId = testUser.Id,
@@ -65,19 +70,23 @@ private with sharing class CaseTriggerTest {
         
         Case testCase = [SELECT Short_Summary__c, Subject FROM Case WHERE OwnerId =: testUser.Id];
         Integer caseShortSummaryLength = testCase.Short_Summary__c.length();
-        Integer caseTitleLength = testCase.Subject.length();
+        Integer caseSubjectLength = testCase.Subject.length();
+        String caseShortSummary = testCase.Short_Summary__c;
         
-        System.assertNotEquals(maxLenghtTitle + extraSymbolsPlusBlankSpace, caseShortSummaryLength);
-        System.assertEquals(caseTitleLength + extraSymbolsPlusBlankSpace, caseShortSummaryLength);
+		// Proof that subject has 12 chars        
+        System.assertEquals(12, caseSubjectLength);
+        System.assertEquals('[Test subject]', caseShortSummary);
+        
+        //Below assert: 35 + 2 =! 14 (12 Subject lenght + 2 extra sybols [])
+        System.assertNotEquals(maxLenghtSubject + extraSymbolsPlusBlankSpace, caseShortSummaryLength);
+        //Below assert: 12 + 2 = 14
+        System.assertEquals(caseSubjectLength + extraSymbolsPlusBlankSpace, caseShortSummaryLength);
     }
 
     @isTest
     static void descriptionShorterThanMax() {
         User testUser = [SELECT Id FROM User WHERE FirstName = 'Test'];
-        Integer extraSymbolsPlusBlankSpace = 0; // Trigger creating short summary like this '[Subject]' + ' Description'
-        									    // Should count only blank space ' ', but it wont, so in total 0 element.
-        CaseSetupVariables getInfo = new CaseSetupVariables();
-        Integer maxLenghtDescription = getInfo.getMaxLengthOfDescriptionForShortSummary();
+        Integer extraSymbolsPlusBlankSpace = 0; // Should count only blank space ' ', but it won't, so in total 0 element.
         System.assertEquals(120, maxLenghtDescription);
         
         Case newCase = new Case(
@@ -92,8 +101,15 @@ private with sharing class CaseTriggerTest {
         Case testCase = [SELECT Short_Summary__c, Description FROM Case WHERE OwnerId =: testUser.Id];
         Integer caseShortSummaryLength = testCase.Short_Summary__c.length();
         Integer caseDescriptionLength = testCase.Description.length();
+        String caseShortSummary = testCase.Short_Summary__c;
         
+        // Proof that description has 16 chars
+        System.assertEquals(16, caseDescriptionLength);
+        System.assertEquals('Test description', caseShortSummary); 
+        
+        //Below assert: 120 + 0 =! 16 (TRUE)
         System.assertNotEquals(maxLenghtDescription + extraSymbolsPlusBlankSpace, caseShortSummaryLength);
+        //Below assert: 16 + 0 = 16 (TRUE)
         System.assertEquals(caseDescriptionLength + extraSymbolsPlusBlankSpace, caseShortSummaryLength);
     }    
 }
