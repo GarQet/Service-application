@@ -5,7 +5,7 @@
         if(load != null) {
             let action = component.get("c.getUserCasesData");
             action.setParams({
-                userId: component.get("v.currentUser.Id"),
+                user: component.get("v.currentUser"),
                 limitOfRecords: component.get("v.limitOfRecords")
             });
             action.setCallback(this, function(response){
