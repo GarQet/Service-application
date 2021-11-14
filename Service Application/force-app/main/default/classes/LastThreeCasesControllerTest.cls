@@ -34,27 +34,23 @@ private with sharing class LastThreeCasesControllerTest {
     @isTest
     static void getThreeLatestCases() {
         User testUser = [SELECT Id FROM User WHERE FirstName = 'Test' LIMIT 1];
-        List<Case> results = LastThreeCasesController.getUserCasesData(testUser.Id, Constants.AMOUNT_OF_CASES);
-        System.assertEquals(Constants.AMOUNT_OF_CASES, results.size());
+        List<Case> results = LastThreeCasesController.getUserCasesData(testUser.Id, 3);
+        System.assertEquals(3, results.size());
     }
     
 	@isTest
     static void getStatusFromThreeLatestCases() {
         User testUser = [SELECT Id FROM User WHERE FirstName = 'Test' LIMIT 1];
-        List<Case> testTotalCases = [SELECT Id FROM Case WHERE OwnerId =: testUser.Id];
-        
-        System.assertEquals(Constants.AMOUNT_OF_CASES, testTotalCases.size());
-        
-        List<Case> results = LastThreeCasesController.getUserCasesData(testUser.Id, testTotalCases.size());
+        List<Case> results = LastThreeCasesController.getUserCasesData(testUser.Id, 3);
         //Verifying if all User cases has assigned default Status name
         for(Case cases : results) {
-            System.assertEquals(Constants.CASE_STATUS_DEFAULT, cases.Status);
+            System.assertEquals('New', cases.Status);
         }
         
         //Seeting Status name
         List<Case> testCase = [SELECT Status FROM Case WHERE OwnerId =: testUser.Id];
         for (Case cases : testCase) {
-            cases.Status = Constants.CASE_STATUS_WORKING;
+            cases.Status = 'Working';
         }
         
        	Test.startTest(); 
@@ -62,9 +58,9 @@ private with sharing class LastThreeCasesControllerTest {
         Test.stopTest();
         
         //Checking Status name
-        results = LastThreeCasesController.getUserCasesData(testUser.Id, testTotalCases.size());
+        results = LastThreeCasesController.getUserCasesData(testUser.Id, 3);
         for(Case cases : results) {
-        	System.assertEquals(Constants.CASE_STATUS_WORKING, cases.Status);
+        	System.assertEquals('Working', cases.Status);
         }
     }
 }
