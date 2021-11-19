@@ -24,7 +24,7 @@
                             			hour="2-digit" minute="2-digit" hour12="false"/>
                     </div>    
 				</aura:iteration>
-                <div style="position: absolute; bottom: 12px; right: 12px;">
+                <div>
                 	<lightning:button label="Hide records" class="slds-m-top_medium" variant="brand" onclick="{!c.hideRecords}"/>
                 </div>
             <aura:set attribute="else">
