@@ -100,41 +100,19 @@ private with sharing class CaseTriggerHandlerTest {
         Case testCase = [SELECT AccountId, ContactId FROM Case WHERE OwnerId =: getTestUser().Id];
         System.assertNotEquals(null, testCase.AccountId, 'Error in shouldCreateContactAndAccountWhenDataWithEmailWasNotFound() - should create dummy account');
         System.assertNotEquals(null, testCase.ContactId, 'Error in shouldCreateContactAndAccountWhenDataWithEmailWasNotFound() - should create dummy contact');
-    }
-    
-    @isTest
-    static void shouldOnlyCreateAccountWhenContactFound() {
-        Contact newContact = new Contact(
-            Email = getTestUser().Email,
-            LastName = 'Test'
-        );
-        
-        Case newCase = new Case(
-        	OwnerId = getTestUser().Id,
-            SuppliedEmail = getTestUser().Email,
-            Description = getExampleText(30)
-        );
-        
-        Test.startTest();
-        insert newContact;
-        insert newCase;
-        Test.stopTest();
-        
-        Case testCase = [SELECT AccountId FROM Case WHERE ContactId =: newContact.Id];
-        System.assertNotEquals(null, testCase.AccountId, 'Error in shouldOnlyCreateAccountWhenContactFound() - should create dummy account');
-    }    
+    }   
     
     @isTest
     static void shouldNotCreateAdditionalContactAndAccountWhenDataWithEmailWasFound() {
         Account newAccount = new Account(
-            Name = 'Test'
+            Name = getTestUser().FirstName
         );
 		insert newAccount;    
         
         Contact newContact = new Contact(
             AccountId = newAccount.Id,
             Email = getTestUser().Email,
-            LastName = 'Test'
+            LastName = getTestUser().FirstName
         );
         insert newContact;
         
@@ -153,7 +131,7 @@ private with sharing class CaseTriggerHandlerTest {
     }    
     
     static User getTestUser() {
-        return [SELECT Id, Email FROM User WHERE FirstName = 'Test' LIMIT 1];
+        return [SELECT Id, Email, FirstName FROM User WHERE FirstName = 'Test' LIMIT 1];
     }    
     
     static String getExampleText(Integer length) {
