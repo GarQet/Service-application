@@ -70,7 +70,7 @@ public class CaseTriggerHandler extends TriggerHandler {
         );
         insert newAccount;
         return newAccount;
-    }    
+    }
 
     public Contact createNewContact(Id accountId, String emailAddress) {
         String name = generateNameFromEmail(emailAddress);
@@ -81,5 +81,5 @@ public class CaseTriggerHandler extends TriggerHandler {
         );
         insert newContact;
         return newContact;
-    }  
+    }
 }
