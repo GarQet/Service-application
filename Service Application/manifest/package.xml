@@ -32,5 +32,9 @@
         <members>*</members>
         <name>StaticResource</name>
     </types>
+    <types>
+        <members>unfiled$public/Total_Reported_Cases_nR8</members>
+        <name>Report</name>
+    </types>
     <version>52.0</version>
 </Package>
