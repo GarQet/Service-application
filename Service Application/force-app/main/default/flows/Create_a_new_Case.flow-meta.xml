@@ -206,7 +206,13 @@
             <inputParameters>
                 <name>placeholder</name>
                 <value>
-                    <stringValue>customeremailadress@example.com</stringValue>
+                    <stringValue>customeremailaddress@example.com</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -325,7 +331,7 @@
             <targetReference>Add_a_new_case</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>
