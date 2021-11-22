@@ -25,4 +25,5 @@ The purpose of it is to show my skills in each scope of knowledge: aura componen
 Project is: _finished_
 
 ## Contact
+Check out my profile on: [LinkedIn](https://www.linkedin.com/in/robert-rachwa%C5%82/), [Trailblazer.me](https://trailblazer.me/id/rrachwal).
 Created by GarQet. Email: rob.rachwal@gmail.com
