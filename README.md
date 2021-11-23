@@ -11,8 +11,9 @@
 ## General info
 The purpose of it is to show my skills in each scope of knowledge: aura components, flow, apex and triggers.
 
-## Screenshot
+## Screenshots
 ![Home Page screenshot](./Resources/IssueCenter.png)
+![Database Diagram screenshot](./Resources/Database%20diagram.png)
 
 ## Functionalities
 * Possibility to create in a fast way a new case straight from home page of issue center (screen flow)
