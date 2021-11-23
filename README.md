@@ -3,16 +3,19 @@
 
 ## Table of contents
 * [General info](#general-info)
-* [Screenshots](#screenshots)
+* [Screenshot](#screenshot)
 * [Functionalities](#functionalities)
+* [Database Diagram](#database-diagram)
 * [Status](#status)
 * [Contact](#contact)
 
 ## General info
 The purpose of it is to show my skills in each scope of knowledge: aura components, flow, apex and triggers.
 
-## Screenshots
+## Screenshot
 ![Home Page screenshot](./Resources/IssueCenter.png)
+
+## Database diagram
 ![Database Diagram screenshot](./Resources/Database%20diagram.png)
 
 ## Functionalities
@@ -26,5 +29,5 @@ The purpose of it is to show my skills in each scope of knowledge: aura componen
 Project is: _finished_
 
 ## Contact
-Check out my profile on: [LinkedIn](https://www.linkedin.com/in/robert-rachwa%C5%82/), [Trailblazer.me](https://trailblazer.me/id/rrachwal).
+Check out my profile on: [LinkedIn](https://www.linkedin.com/in/robert-rachwa%C5%82/), [Trailblazer.me](https://trailblazer.me/id/rrachwal).<br>
 Created by GarQet. Email: rob.rachwal@gmail.com
