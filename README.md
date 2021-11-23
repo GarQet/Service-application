@@ -22,7 +22,7 @@ The purpose of it is to show my skills in each scope of knowledge: aura componen
 * Automatically sending notification email to customer when status case has changed (trigger flow)
 
 ## Status
-Project is: _finished_
+Project is: _under development_
 
 ## Contact
 Check out my profile on: [LinkedIn](https://www.linkedin.com/in/robert-rachwa%C5%82/), [Trailblazer.me](https://trailblazer.me/id/rrachwal).
